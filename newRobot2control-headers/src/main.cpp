@@ -10,9 +10,10 @@ void pre_auton(void) {
 }
 
 void autonomous(void) {
-  //calibrateInertial();
+  calibrateInertial();
+  task::sleep(500);
   userControlEnabled=false;
-  runAuton();
+  redAutonTop();
   //runAuton();
 }
 

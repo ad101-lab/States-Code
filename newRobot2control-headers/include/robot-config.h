@@ -77,10 +77,10 @@ void moveBackwards(double cm, double speed, bool stopping){
 }
 
 void moveForwardAccurate(double cm, double speed){
-  leftFWD.spinFor(forward, cm-1, rev, speed, velocityUnits::pct, false);
-  rightFWD.spinFor(forward, cm-1, rev, speed, velocityUnits::pct, false);
-  leftBack.spinFor(forward, cm-1, rev, speed, velocityUnits::pct, false);
-  rightBack.spinFor(forward, cm-1, rev, speed, velocityUnits::pct, true);
+  leftFWD.spinFor(forward, cm-0.3, rev, speed, velocityUnits::pct, false);
+  rightFWD.spinFor(forward, cm-0.3, rev, speed, velocityUnits::pct, false);
+  leftBack.spinFor(forward, cm-0.3, rev, speed, velocityUnits::pct, false);
+  rightBack.spinFor(forward, cm-0.3, rev, speed, velocityUnits::pct, true);
   leftFWD.spinFor(forward, cm-0.1, rev, speed*0.1, velocityUnits::pct, false);
   rightFWD.spinFor(forward, cm-0.1, rev, speed*0.1, velocityUnits::pct, false);
   leftBack.spinFor(forward, cm-0.1, rev, speed*0.1, velocityUnits::pct, false);
@@ -88,10 +88,10 @@ void moveForwardAccurate(double cm, double speed){
 }
 
 void moveBackwardsAccurate(double cm, double speed){
-  leftFWD.spinFor(reverse, cm-1, rev, speed, velocityUnits::pct, false);
-  rightFWD.spinFor(reverse, cm-1, rev, speed, velocityUnits::pct, false);
-  leftBack.spinFor(reverse, cm-1, rev, speed, velocityUnits::pct, false);
-  rightBack.spinFor(reverse, cm-1, rev, speed, velocityUnits::pct, true);
+  leftFWD.spinFor(reverse, cm-0.3, rev, speed, velocityUnits::pct, false);
+  rightFWD.spinFor(reverse, cm-0.3, rev, speed, velocityUnits::pct, false);
+  leftBack.spinFor(reverse, cm-0.3, rev, speed, velocityUnits::pct, false);
+  rightBack.spinFor(reverse, cm-0.3, rev, speed, velocityUnits::pct, true);
   leftFWD.spinFor(reverse, cm-0.1, rev, speed*0.1, velocityUnits::pct, false);
   rightFWD.spinFor(reverse, cm-0.1, rev, speed*0.1, velocityUnits::pct, false);
   leftBack.spinFor(reverse, cm-0.1, rev, speed*0.1, velocityUnits::pct, false);
@@ -99,6 +99,7 @@ void moveBackwardsAccurate(double cm, double speed){
 }
 
 void turnRight(double degree, double speed){
+  turnInertial.setRotation(0, degrees);
   leftFWD.spin(forward, speed, pct);
   rightFWD.spin(reverse, speed, pct);
   leftBack.spin(forward, speed, pct);
@@ -121,6 +122,7 @@ void turnRight(double degree, double speed){
 }
 
 void turnLeft(double degree, double speed){
+  turnInertial.setRotation(0, degrees);
   leftFWD.spin(reverse, speed, pct);
   rightFWD.spin(forward, speed, pct);
   leftBack.spin(reverse, speed, pct);
@@ -176,7 +178,7 @@ void intake (double speed){
 
 int stack(){
   double speeds;
-  while(cubeRamp.rotation(rev)<3.5){
+  while(cubeRamp.rotation(rev)<3.3){
     speeds = (cubeRamp.rotation(rev)*-26)+100;
     cubeRamp.spin(forward, speeds, pct);
     if(cubeRamp.rotation(rev)>2){
@@ -239,9 +241,7 @@ int oneBarUp(int distance, int speeds, bool stopping){
 
 void oneBarTower(std::string tower, bool waiting){
   double goal;
-  if(tower == "High" or tower =="high"){
-    goal = 2.3;
-  } else if (tower == "Mid" or tower == "Middle" or tower == "mid" or tower == "middle") {
+  if (tower == "Mid" or tower == "Middle" or tower == "mid" or tower == "middle") {
     goal = 2.2;
   }else if (tower == "Low" or tower == "low" or tower == "alliance" or tower == "Alliance") {
     goal = 0.7;
@@ -280,14 +280,27 @@ int blueAutonBottom(){
 }
 
 int redAutonTop(){
+  intake(150);
+  moveForward(2.1, 50, true);
+  intake(0);
+  turnLeft(90, 60);
+  intake(150);
+  moveForward(2.2, 60, true);
+  intake(-50);
+  task::sleep(500);
+  intake(0);
+  task::sleep(20);
+  turnLeft(45, 60);
+  moveForward(1.8, 60, true);
+  stack();
   return 1;
 }
 
 int blueAutonTop(){
   moveForwardAccurate(1.9, 50);
-  turnRight(90, 60);
+  turnLeft(90, 60);
   moveForwardAccurate(2.2, 60);
-  turnLeft(45, 60);
+  turnRight(45, 60);
   moveForwardAccurate(2, 60);
   stack();
   return 1;
