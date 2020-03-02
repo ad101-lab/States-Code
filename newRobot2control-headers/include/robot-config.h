@@ -81,10 +81,10 @@ void moveForwardAccurate(double cm, double speed){
   rightFWD.spinFor(forward, cm-0.3, rev, speed, velocityUnits::pct, false);
   leftBack.spinFor(forward, cm-0.3, rev, speed, velocityUnits::pct, false);
   rightBack.spinFor(forward, cm-0.3, rev, speed, velocityUnits::pct, true);
-  leftFWD.spinFor(forward, cm-0.1, rev, speed*0.1, velocityUnits::pct, false);
-  rightFWD.spinFor(forward, cm-0.1, rev, speed*0.1, velocityUnits::pct, false);
-  leftBack.spinFor(forward, cm-0.1, rev, speed*0.1, velocityUnits::pct, false);
-  rightBack.spinFor(forward, cm-0.1, rev, speed*0.1, velocityUnits::pct, true);
+  leftFWD.spinFor(forward, 0.1, rev, speed*0.1, velocityUnits::pct, false);
+  rightFWD.spinFor(forward, 0.1, rev, speed*0.1, velocityUnits::pct, false);
+  leftBack.spinFor(forward, 0.1, rev, speed*0.1, velocityUnits::pct, false);
+  rightBack.spinFor(forward, 0.1, rev, speed*0.1, velocityUnits::pct, true);
 }
 
 void moveBackwardsAccurate(double cm, double speed){
@@ -92,10 +92,10 @@ void moveBackwardsAccurate(double cm, double speed){
   rightFWD.spinFor(reverse, cm-0.3, rev, speed, velocityUnits::pct, false);
   leftBack.spinFor(reverse, cm-0.3, rev, speed, velocityUnits::pct, false);
   rightBack.spinFor(reverse, cm-0.3, rev, speed, velocityUnits::pct, true);
-  leftFWD.spinFor(reverse, cm-0.1, rev, speed*0.1, velocityUnits::pct, false);
-  rightFWD.spinFor(reverse, cm-0.1, rev, speed*0.1, velocityUnits::pct, false);
-  leftBack.spinFor(reverse, cm-0.1, rev, speed*0.1, velocityUnits::pct, false);
-  rightBack.spinFor(reverse, cm-0.1, rev, speed*0.1, velocityUnits::pct, true);
+  leftFWD.spinFor(reverse, 0.1, rev, speed*0.1, velocityUnits::pct, false);
+  rightFWD.spinFor(reverse, 0.1, rev, speed*0.1, velocityUnits::pct, false);
+  leftBack.spinFor(reverse, 0.1, rev, speed*0.1, velocityUnits::pct, false);
+  rightBack.spinFor(reverse, 0.1, rev, speed*0.1, velocityUnits::pct, true);
 }
 
 void turnRight(double degree, double speed){
