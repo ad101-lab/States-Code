@@ -243,7 +243,7 @@ void oneBarTower(std::string tower, bool waiting){
   if (tower == "Mid" or tower == "Middle" or tower == "mid" or tower == "middle") {
     goal = 2.2;
   }else if (tower == "Low" or tower == "low" or tower == "alliance" or tower == "Alliance") {
-    goal = 0.7;
+    goal = 1.2;
   } else {};
   oneBar.spinTo(goal, rev, waiting);
 }
