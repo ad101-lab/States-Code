@@ -3,22 +3,24 @@ using namespace vex;
 
 void pre_auton(void) {
   userControlEnabled = false;
+  HUDenabled = false;
   task userControls(userControl);
   motorHold(true);
   calibrateInertial();
-  //task pickAutonmous(pickAuton);
+  task pickAutonmous(pickAuton);
 }
 
 void autonomous(void) {
   calibrateInertial();
   task::sleep(500);
   userControlEnabled=false;
-  redAutonTop();
+  redAutonBottom();
   //runAuton();
 }
 
 void usercontrol(void) {//User Control
-  //task showHUD(HUD);
+  task showHUD(HUD);
+  HUDenabled = true;
   userControlEnabled = true;
 }
 
