@@ -16,7 +16,7 @@
   for (int iterator = 0; iterator < iterations; iterator++)
 using namespace vex;
 
-extern brain Brain;
+extern brain Brain;  // sets up all of the external objects
 extern motor leftFWD;
 extern motor leftBack;
 extern motor rightFWD;
@@ -46,7 +46,7 @@ inertial turnInertial = inertial(PORT11);
 controller Controller1        = controller(primary);//Sets up controllers
 controller Controller2        = controller(partner);
 
-int cubeRampValue;//Sets up integers to be used later
+int cubeRampValue;//Sets up varables to be used later
 int intakeValue;
 double cms;
 double tright;
@@ -63,36 +63,36 @@ bool HUDenabled = false;
 std::string tower;
 
 void moveForward(double cm, double speed, bool stopping){
-  leftFWD.spinFor(forward, cm, rev, speed, velocityUnits::pct, false);
+  leftFWD.spinFor(forward, cm, rev, speed, velocityUnits::pct, false);//starts the motors
   rightFWD.spinFor(forward, cm, rev, speed, velocityUnits::pct, false);
   leftBack.spinFor(forward, cm, rev, speed, velocityUnits::pct, false);
   rightBack.spinFor(forward, cm, rev, speed, velocityUnits::pct, stopping);
 } 
 
 void moveBackwards(double cm, double speed, bool stopping){
-  leftFWD.spinFor(reverse, cm, rev, speed, velocityUnits::pct, false);
+  leftFWD.spinFor(reverse, cm, rev, speed, velocityUnits::pct, false);//starts the motors
   rightFWD.spinFor(reverse, cm, rev, speed, velocityUnits::pct, false);
   leftBack.spinFor(reverse, cm, rev, speed, velocityUnits::pct, false);
   rightBack.spinFor(reverse, cm, rev, speed, velocityUnits::pct, stopping);
 }
 
 void moveForwardAccurate(double cm, double speed){
-  leftFWD.spinFor(forward, cm-0.3, rev, speed, velocityUnits::pct, false);
+  leftFWD.spinFor(forward, cm-0.3, rev, speed, velocityUnits::pct, false);//moves close
   rightFWD.spinFor(forward, cm-0.3, rev, speed, velocityUnits::pct, false);
   leftBack.spinFor(forward, cm-0.3, rev, speed, velocityUnits::pct, false);
   rightBack.spinFor(forward, cm-0.3, rev, speed, velocityUnits::pct, true);
-  leftFWD.spinFor(forward, 0.1, rev, speed*0.1, velocityUnits::pct, false);
+  leftFWD.spinFor(forward, 0.1, rev, speed*0.1, velocityUnits::pct, false);//moves there and stops
   rightFWD.spinFor(forward, 0.1, rev, speed*0.1, velocityUnits::pct, false);
   leftBack.spinFor(forward, 0.1, rev, speed*0.1, velocityUnits::pct, false);
   rightBack.spinFor(forward, 0.1, rev, speed*0.1, velocityUnits::pct, true);
 }
 
 void moveBackwardsAccurate(double cm, double speed){
-  leftFWD.spinFor(reverse, cm-0.3, rev, speed, velocityUnits::pct, false);
+  leftFWD.spinFor(reverse, cm-0.3, rev, speed, velocityUnits::pct, false);// moves close
   rightFWD.spinFor(reverse, cm-0.3, rev, speed, velocityUnits::pct, false);
   leftBack.spinFor(reverse, cm-0.3, rev, speed, velocityUnits::pct, false);
   rightBack.spinFor(reverse, cm-0.3, rev, speed, velocityUnits::pct, true);
-  leftFWD.spinFor(reverse, 0.1, rev, speed*0.1, velocityUnits::pct, false);
+  leftFWD.spinFor(reverse, 0.1, rev, speed*0.1, velocityUnits::pct, false);//move there and stops
   rightFWD.spinFor(reverse, 0.1, rev, speed*0.1, velocityUnits::pct, false);
   leftBack.spinFor(reverse, 0.1, rev, speed*0.1, velocityUnits::pct, false);
   rightBack.spinFor(reverse, 0.1, rev, speed*0.1, velocityUnits::pct, true);
@@ -100,7 +100,7 @@ void moveBackwardsAccurate(double cm, double speed){
 
 void turnRight(double degree, double speed){
   turnInertial.setRotation(0, degrees);
-  leftFWD.spin(forward, speed, pct);
+  leftFWD.spin(forward, speed, pct);// moves close at full speed
   rightFWD.spin(reverse, speed, pct);
   leftBack.spin(forward, speed, pct);
   rightBack.spin(reverse, speed, pct);
@@ -110,7 +110,7 @@ void turnRight(double degree, double speed){
     difference=  degree - turnInertial.rotation();
     task::sleep(20);
   }
-  leftFWD.spin(forward, speed*0.1, pct);
+  leftFWD.spin(forward, speed*0.1, pct);//slows down
   rightFWD.spin(reverse, speed*0.1, pct);
   leftBack.spin(forward, speed*0.1, pct);
   rightBack.spin(reverse, speed*0.1, pct);
@@ -123,7 +123,7 @@ void turnRight(double degree, double speed){
 
 void turnLeft(double degree, double speed){
   turnInertial.setRotation(0, degrees);
-  leftFWD.spin(reverse, speed, pct);
+  leftFWD.spin(reverse, speed, pct);//moves close at full speed
   rightFWD.spin(forward, speed, pct);
   leftBack.spin(reverse, speed, pct);
   rightBack.spin(forward, speed, pct);
@@ -133,13 +133,13 @@ void turnLeft(double degree, double speed){
     difference=  degree - std::abs(turnInertial.rotation());
     task::sleep(20);
   }
-  leftFWD.spin(reverse, speed*0.1, pct);
+  leftFWD.spin(reverse, speed*0.1, pct);//slows down
   rightFWD.spin(forward, speed*0.1, pct);
   leftBack.spin(reverse, speed*0.1, pct);
   rightBack.spin(forward, speed*0.1, pct);
   waitUntil(std::abs(turnInertial.rotation()) > (degree-2));
   leftFWD.stop();
-  rightFWD.stop();
+  rightFWD.stop();//stops
   leftBack.stop();
   rightBack.stop();
 }
@@ -180,7 +180,7 @@ int stack(){
   double speeds;
   while(cubeRamp.rotation(rev)<3){
     speeds = (cubeRamp.rotation(rev)*-26)+100;
-    cubeRamp.spin(forward, speeds, pct);
+    cubeRamp.spin(forward, speeds, pct);//puts ramp up in a linear function
     if(cubeRamp.rotation(rev)>2){
       intake(-70);
     }
@@ -240,12 +240,12 @@ int oneBarUp(int distance, int speeds, bool stopping){
 
 void oneBarTower(std::string tower, bool waiting){
   double goal;
-  if (tower == "Mid" or tower == "Middle" or tower == "mid" or tower == "middle") {
+  if (tower == "Mid" or tower == "Middle" or tower == "mid" or tower == "middle") {//moves to mid tower
     goal = 2.2;
-  }else if (tower == "Low" or tower == "low" or tower == "alliance" or tower == "Alliance") {
+  }else if (tower == "Low" or tower == "low" or tower == "alliance" or tower == "Alliance") {//moves to low tower
     goal = 1.2;
   } else {};
-  oneBar.spinTo(goal, rev, waiting);
+  oneBar.spinTo(goal, rev, waiting);// moves to goal
 }
 
 void flipOut(){
