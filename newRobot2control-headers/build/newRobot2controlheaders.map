@@ -66,11 +66,11 @@ Discarded input sections
 
  .text          0x00000000        0x0 build/src/main.o
  .text._Z19moveForwardAccuratedd
-                0x00000000      0x1c8 build/src/main.o
+                0x00000000      0x1b8 build/src/main.o
  .ARM.exidx.text._Z19moveForwardAccuratedd
                 0x00000000        0x8 build/src/main.o
  .text._Z21moveBackwardsAccuratedd
-                0x00000000      0x1c8 build/src/main.o
+                0x00000000      0x1b8 build/src/main.o
  .ARM.exidx.text._Z21moveBackwardsAccuratedd
                 0x00000000        0x8 build/src/main.o
  .text._Z8turnLeftdd
