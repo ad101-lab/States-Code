@@ -3,7 +3,6 @@ using namespace vex;
 
 void pre_auton(void) {
   userControlEnabled = false;
-  HUDenabled = false;
   task userControls(userControl);
   motorHold(true);
   calibrateInertial();
@@ -11,15 +10,12 @@ void pre_auton(void) {
 }
 
 void autonomous(void) {
-  calibrateInertial();
-  task::sleep(500);
+  flipOut();
   userControlEnabled=false;
-  redAutonBottom();
-  //runAuton();
+  runAuton();
 }
 
 void usercontrol(void) {//User Control
-  task showHUD(HUD);
   HUDenabled = true;
   userControlEnabled = true;
 }

@@ -171,6 +171,10 @@ void cubeRampVertical (bool degree, double speed){
 
 void intake (double speed){
   intakeValue = speed*-1; //Conversion factor
+  if(speed == 0){
+    intakeLeft.stop();
+    intakeRight.stop();
+  }
   intakeLeft.spin(forward, intakeValue, rpm);//spins both intakes
   intakeRight.spin(forward, intakeValue, rpm);
 
@@ -241,20 +245,28 @@ int oneBarUp(int distance, int speeds, bool stopping){
 void oneBarTower(std::string tower, bool waiting){
   double goal;
   if (tower == "Mid" or tower == "Middle" or tower == "mid" or tower == "middle") {//moves to mid tower
-    goal = 2.2;
+    goal = 2;
   }else if (tower == "Low" or tower == "low" or tower == "alliance" or tower == "Alliance") {//moves to low tower
-    goal = 1.2;
-  } else {};
+    goal = 1.5;
+  } else {
+    goal = 0;
+  };
   oneBar.spinTo(goal, rev, waiting);// moves to goal
 }
 
 void flipOut(){
-  
+  oneBar.spin(forward);
+  cubeRamp.spin(forward);
+  intake(-100);
+  waitUntil(oneBar.rotation(rev)> 1.2);
+  oneBar.stop();
+  cubeRamp.stop();
+  intake(0);
 }
 
 int redAutonBottom(){
   intake(200);
-  moveForward(4.4, 30, true);
+  moveForward(4.2, 30, true);
   intake(-50);
   wait(0.5, seconds);
   intake(0);
@@ -272,7 +284,7 @@ int blueAutonBottom(){
   wait(0.5, seconds);
   intake(0);
   moveBackwards(1.8, 60, true);
-  turnRight(135, 60);
+  turnLeft(135, 60);
   moveForward(2.2, 60, true);
   stack();
   return 1;
@@ -297,16 +309,16 @@ int redAutonTop(){
 
 int blueAutonTop(){
   intake(150);
-  moveForward(2, 50, true);
+  moveForward(2.2, 50, true);
   intake(0);
   turnRight(90, 60);
   intake(150);
-  moveForward(2.2, 60, true);
+  moveForward(2.4, 60, true);
   intake(-50);
   task::sleep(500);
   intake(0);
   task::sleep(20);
-  turnRight(45, 60);
+  turnRight(35, 60);
   moveForward(1.8, 60, true);
   stack();
   return 1;
@@ -377,7 +389,6 @@ void resetEncoders(){
   intakeRight.resetPosition();
 }
 
-
 int HUD(){
   while(HUDenabled){
     int cap = Brain.Battery.capacity();
@@ -400,5 +411,10 @@ int HUD(){
       intakeTemp = (intakeLeft.temperature()+ intakeRight.temperature())/2;
     }
   }
+  return 1;
+}
+
+int baseStop(){
+  rightFWD.stop();rightBack.stop();leftFWD.stop();leftBack.stop();
   return 1;
 }
