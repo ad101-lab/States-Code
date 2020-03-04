@@ -251,6 +251,7 @@ void oneBarTower(std::string tower, bool waiting){
   } else {
     goal = 0;
   };
+  cubeRamp.spinTo(1.5, rev, true);
   oneBar.spinTo(goal, rev, waiting);// moves to goal
 }
 

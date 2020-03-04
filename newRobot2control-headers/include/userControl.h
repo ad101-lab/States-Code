@@ -10,13 +10,12 @@
 int userControl(){
   while (1){
     if (userControlEnabled) {
-      task showHUD(HUD);
       rightFWD.spin(forward, (Controller1.Axis2.position()/ turnValue)/baseRPM , vex::velocityUnits::pct);//Tank Drive controls
       leftFWD.spin(forward, (Controller1.Axis3.position()/ turnValue)/baseRPM , vex::velocityUnits::pct);
       rightBack.spin(forward, (Controller1.Axis2.position()/ turnValue)/baseRPM , vex::velocityUnits::pct);
       leftBack.spin(forward, (Controller1.Axis3.position()/ turnValue)/baseRPM , vex::velocityUnits::pct);
       if (Controller2.ButtonL1.pressing() and !(cubeRamp.rotation(rev)>3.5)){//if button is pressing it will
-        cubeRampValue = (-26*(cubeRamp.rotation(rev)))+100;//sets cube ramp to 85 RPM
+        cubeRampValue = (-23*(cubeRamp.rotation(rev)))+100;//sets cube ramp to 85 RPM
      } else if (Controller2.ButtonL2.pressing() and !(cubeRamp.rotation(rev)<0)) {//if button is pressing it will
        cubeRampValue = -100;//sets cube ramp to -100 RPM
       } else {//if no others are true

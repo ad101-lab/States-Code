@@ -16,6 +16,7 @@ void autonomous(void) {
 }
 
 void usercontrol(void) {//User Control
+  task driveHUD(HUD);
   HUDenabled = true;
   userControlEnabled = true;
 }
