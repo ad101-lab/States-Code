@@ -251,8 +251,19 @@ void oneBarTower(std::string tower, bool waiting){
   } else {
     goal = 0;
   };
-  cubeRamp.spinTo(1.5, rev, true);
+  cubeRamp.spinTo(1.5, rev, false);
+  wait(0.25, seconds);
   oneBar.spinTo(goal, rev, waiting);// moves to goal
+}
+
+int oneBarTowerLow(){
+  oneBarTower("low",true);
+  return 1;
+}
+
+int oneBarTowerMid(){
+  oneBarTower("mid",true);
+  return 1;
 }
 
 void flipOut(){
@@ -406,6 +417,16 @@ int HUD(){
       Controller1.Screen.setCursor(3, 1);
       Controller1.Screen.print("Intake Temp: ");
       Controller1.Screen.print(intakeTemp);
+      Controller2.Screen.clearScreen();
+      Controller2.Screen.setCursor(1, 1);
+      Controller2.Screen.print("Time: ");
+      Controller2.Screen.print(timeInMatch);
+      Controller2.Screen.setCursor(2, 1);
+      Controller2.Screen.print("Battery: ");
+      Controller2.Screen.print(cap);
+      Controller2.Screen.setCursor(3, 1);
+      Controller2.Screen.print("Intake Temp: ");
+      Controller2.Screen.print(intakeTemp);
       task::sleep(1000);
       cap = Brain.Battery.capacity();
       timeInMatch = timeInMatch - 1;
@@ -416,6 +437,9 @@ int HUD(){
 }
 
 int baseStop(){
-  rightFWD.stop();rightBack.stop();leftFWD.stop();leftBack.stop();
+  rightFWD.stop();
+  rightBack.stop();//Stops the base motors
+  leftFWD.stop();
+  leftBack.stop();
   return 1;
 }

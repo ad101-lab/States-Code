@@ -16,7 +16,7 @@ int userControl(){
       leftBack.spin(forward, (Controller1.Axis3.position()/ turnValue)/baseRPM , vex::velocityUnits::pct);
       if (Controller2.ButtonL1.pressing() and !(cubeRamp.rotation(rev)>3.5)){//if button is pressing it will
         cubeRampValue = (-23*(cubeRamp.rotation(rev)))+100;//sets cube ramp to 85 RPM
-     } else if (Controller2.ButtonL2.pressing() and !(cubeRamp.rotation(rev)<0)) {//if button is pressing it will
+     } else if (Controller2.ButtonL2.pressing() and (!(cubeRamp.rotation(rev)<0) or Controller2.ButtonY.pressing())) {//if button is pressing it will
        cubeRampValue = -100;//sets cube ramp to -100 RPM
       } else {//if no others are true
         cubeRampValue = 0;//Stops cube ramp
@@ -35,7 +35,7 @@ int userControl(){
       }*/ else {//If no other conditions are true
         intakeValue = 0;//sets cube ramp to -100 RPM
       }
-      if(Controller2.ButtonUp.pressing() and !(oneBar.rotation(rev)>2.3)){
+      if(Controller2.ButtonUp.pressing() and (!(oneBar.rotation(rev)>2.3) or Controller2.ButtonY.pressing())){
         oneBarValue = 100;
         cubeRampValue += 50;
      }else if (Controller2.ButtonDown.pressing()and !(oneBar.rotation(rev)<0)) {
@@ -59,9 +59,9 @@ int userControl(){
         resetEncoders();
       }
       if (Controller2.ButtonX.pressing()){
-        oneBarTower("mid", true);
+        task getOneBarTower(oneBarTowerMid);
       } else if (Controller2.ButtonB.pressing()) {
-        oneBarTower("low", true);
+        task getOneBarTower(oneBarTowerLow);
       }
       oneBar.spin(forward, oneBarValue, pct);
       intakeLeft.spin(forward, intakeValue , vex::velocityUnits::rpm);//applies the changes

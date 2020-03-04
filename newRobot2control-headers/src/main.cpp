@@ -6,7 +6,7 @@ void pre_auton(void) {
   task userControls(userControl);
   motorHold(true);
   calibrateInertial();
-  task pickAutonmous(pickAuton);
+  pickAuton();
 }
 
 void autonomous(void) {
