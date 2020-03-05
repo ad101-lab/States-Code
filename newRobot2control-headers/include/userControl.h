@@ -14,7 +14,7 @@ int userControl(){
       leftFWD.spin(forward, (Controller1.Axis3.position()/ turnValue)/baseRPM , vex::velocityUnits::pct);
       rightBack.spin(forward, (Controller1.Axis2.position()/ turnValue)/baseRPM , vex::velocityUnits::pct);
       leftBack.spin(forward, (Controller1.Axis3.position()/ turnValue)/baseRPM , vex::velocityUnits::pct);
-      if (Controller2.ButtonL1.pressing() and !(cubeRamp.rotation(rev)>3.5)){//if button is pressing it will
+      if (Controller2.ButtonL1.pressing() and !(cubeRamp.rotation(rev)>3)){//if button is pressing it will
         cubeRampValue = (-23*(cubeRamp.rotation(rev)))+100;//sets cube ramp to 85 RPM
      } else if (Controller2.ButtonL2.pressing() and (!(cubeRamp.rotation(rev)<0) or Controller2.ButtonY.pressing())) {//if button is pressing it will
        cubeRampValue = -100;//sets cube ramp to -100 RPM

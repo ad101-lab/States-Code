@@ -182,17 +182,15 @@ void intake (double speed){
 
 int stack(){
   double speeds;
-  while(cubeRamp.rotation(rev)<3){
-    speeds = (cubeRamp.rotation(rev)*-26)+100;
+  while(cubeRamp.rotation(rev)<3.2){
+    speeds = (cubeRamp.rotation(rev)*-22)+100;
     cubeRamp.spin(forward, speeds, pct);//puts ramp up in a linear function
-    if(cubeRamp.rotation(rev)>2){
+    if(cubeRamp.rotation(rev)>1.5){
       intake(-70);
     }
   }
   intake(0);
   cubeRamp.spin(reverse);//Puts the cube ramp down
-  waitUntil(cubeRamp.rotation(rev)<1);
-  intake(-100);//Stops the intake
   moveBackwards(1, 100, true);
   cubeRamp.stop();
   intake(0);
@@ -277,12 +275,12 @@ void flipOut(){
 }
 
 int redAutonBottom(){
-  intake(200);
+  intake(170);
   moveForward(4.2, 30, true);
   intake(-50);
   wait(0.5, seconds);
   intake(0);
-  moveBackwards(1.8, 70, true);
+  moveBackwards(1.8, 60, true);
   turnRight(135, 60);
   moveForward(2.2, 60, true);
   stack();
@@ -304,16 +302,16 @@ int blueAutonBottom(){
 
 int redAutonTop(){
   intake(150);
-  moveForward(2, 50, true);
+  moveForward(2.2, 50, true);
   intake(0);
-  turnLeft(90, 60);
+  turnRight(90, 60);
   intake(150);
-  moveForward(2.2, 60, true);
+  moveForward(2.4, 60, true);
   intake(-50);
   task::sleep(500);
   intake(0);
   task::sleep(20);
-  turnLeft(45, 60);
+  turnLeft(35, 60);
   moveForward(1.8, 60, true);
   stack();
   return 1;
