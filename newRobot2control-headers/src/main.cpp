@@ -10,7 +10,7 @@ void pre_auton(void) {
 }
 
 void autonomous(void) {
-  flipOut();
+  //flipOut();
   userControlEnabled=false;
   runAuton();
 }
