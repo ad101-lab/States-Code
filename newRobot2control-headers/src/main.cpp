@@ -10,8 +10,9 @@ void pre_auton(void) {
 }
 
 void autonomous(void) {
-  //flipOut();
   userControlEnabled=false;
+  flipOut();
+  cubeRampVertical(false, 100);
   runAuton();
 }
 

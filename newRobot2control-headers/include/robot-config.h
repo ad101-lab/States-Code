@@ -155,15 +155,9 @@ void cubeRampVertical (bool degree, double speed){
   cubeRamp.setVelocity(speed, rpm);//sets the velocity to the specified 
   if(degree == true){
     double speeds;
-    while(cubeRamp.rotation(rev)<3.5){
-      speeds = (cubeRamp.rotation(rev)*-26)+100;
-      cubeRamp.spin(forward, speeds, pct);
-    }
-    cubeRamp.stop();//Stops the mmotor
+    cubeRamp.spinTo(3.7, rev, false);//Stops the mmotor
   }else if (degree == false) {
-    cubeRamp.spin(reverse);//moves the motor backwards
-    waitUntil(cubeRamp.rotation(rev)< 0);//Waits until the bumper is pressed
-    cubeRamp.stop();//Stops the mmotor
+    cubeRamp.spinTo(0, rev, false);
   }
   cubeRamp.setVelocity(100, percent);//Resets the velocity
 
@@ -182,7 +176,7 @@ void intake (double speed){
 
 int stack(){
   double speeds;
-  while(cubeRamp.rotation(rev)<3.2){
+  while(cubeRamp.rotation(rev)<3){
     speeds = (cubeRamp.rotation(rev)*-22)+100;
     cubeRamp.spin(forward, speeds, pct);//puts ramp up in a linear function
     if(cubeRamp.rotation(rev)>1.5){
@@ -265,13 +259,8 @@ int oneBarTowerMid(){
 }
 
 void flipOut(){
-  oneBar.spin(forward);
-  cubeRamp.spin(forward);
-  intake(-100);
-  waitUntil(oneBar.rotation(rev)> 1.2);
-  oneBar.stop();
-  cubeRamp.stop();
-  intake(0);
+  oneBarTowerLow();
+  oneBarTower("none",true);
 }
 
 int redAutonBottom(){
@@ -334,6 +323,12 @@ int blueAutonTop(){
   return 1;
 }
 
+void skills(){
+  moveForward(10.5, 50, true);
+  turnRight(45, 60);
+  
+}
+
 int pickAuton (){
   task::sleep(100);
   userControlEnabled = false;
@@ -370,13 +365,13 @@ int pickAuton (){
 
 void runAuton(){
   if(autonColor and autonSide){
-    task redAutonomousTop(redAutonTop);
+    redAutonTop();
   } else if(autonColor and !autonSide){
-    task redAutonomousBottom(redAutonBottom);
+    redAutonBottom();
   } else if(!autonColor and autonSide){
-    task blueAutonomousTop(blueAutonTop);
+    blueAutonTop();
   } else if(!autonColor and !autonSide){
-    task blueAutonomousBottom(blueAutonBottom);
+    blueAutonBottom();
   }
 }
 
