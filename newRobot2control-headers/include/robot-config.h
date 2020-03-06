@@ -259,8 +259,10 @@ int oneBarTowerMid(){
 }
 
 void flipOut(){
-  oneBarTowerLow();
-  oneBarTower("none",true);
+  intake(200);
+  wait(1, seconds);
+  intake(-200);
+  wait(0.5, seconds);
 }
 
 int redAutonBottom(){
@@ -284,7 +286,7 @@ int blueAutonBottom(){
   intake(0);
   moveBackwards(1.8, 60, true);
   turnLeft(135, 60);
-  moveForward(2.2, 60, true);
+  moveForward(2.1, 60, true);
   stack();
   return 1;
 }
@@ -293,7 +295,7 @@ int redAutonTop(){
   intake(150);
   moveForward(2.2, 50, true);
   intake(0);
-  turnRight(90, 60);
+  turnLeft(90, 60);
   intake(150);
   moveForward(2.4, 60, true);
   intake(-50);
