@@ -86,7 +86,7 @@ Discarded input sections
  .ARM.exidx.text._Z8oneBarUpiib
                 0x00000000        0x8 build/src/main.o
  .text._Z6skillsv
-                0x00000000       0x60 build/src/main.o
+                0x00000000       0x88 build/src/main.o
  .ARM.exidx.text._Z6skillsv
                 0x00000000        0x8 build/src/main.o
  .text._Z8baseStopv
@@ -2354,21 +2354,20 @@ Linker script and memory map
  .text._Z12blueAutonTopv
                 0x038010f0      0x140 build/src/main.o
                 0x038010f0                blueAutonTop()
+ .text._Z3HUDv  0x03801230      0x210 build/src/main.o
+                0x03801230                HUD()
  .text._Z9pickAutonv
-                0x03801230      0x1d0 build/src/main.o
-                0x03801230                pickAuton()
+                0x03801440      0x1d4 build/src/main.o
+                0x03801440                pickAuton()
  .text._Z8runAutonv
-                0x03801400       0x5c build/src/main.o
-                0x03801400                runAuton()
- *fill*         0x0380145c        0x4 
+                0x03801614       0x5c build/src/main.o
+                0x03801614                runAuton()
  .text._Z17calibrateInertialv
-                0x03801460       0x78 build/src/main.o
-                0x03801460                calibrateInertial()
+                0x03801670       0x78 build/src/main.o
+                0x03801670                calibrateInertial()
  .text._Z13resetEncodersv
-                0x038014d8       0x6c build/src/main.o
-                0x038014d8                resetEncoders()
- .text._Z3HUDv  0x03801544      0x210 build/src/main.o
-                0x03801544                HUD()
+                0x038016e8       0x6c build/src/main.o
+                0x038016e8                resetEncoders()
  *fill*         0x03801754        0x4 
  .text._Z11userControlv
                 0x03801758      0x5c8 build/src/main.o
@@ -3323,6 +3322,9 @@ Linker script and memory map
  .ARM.exidx.text._Z12blueAutonTopv
                 0x0380540c        0x0 build/src/main.o
                                   0x8 (size before relaxing)
+ .ARM.exidx.text._Z3HUDv
+                0x0380540c        0x0 build/src/main.o
+                                  0x8 (size before relaxing)
  .ARM.exidx.text._Z9pickAutonv
                 0x0380540c        0x0 build/src/main.o
                                   0x8 (size before relaxing)
@@ -3333,9 +3335,6 @@ Linker script and memory map
                 0x0380540c        0x0 build/src/main.o
                                   0x8 (size before relaxing)
  .ARM.exidx.text._Z13resetEncodersv
-                0x0380540c        0x0 build/src/main.o
-                                  0x8 (size before relaxing)
- .ARM.exidx.text._Z3HUDv
                 0x0380540c        0x0 build/src/main.o
                                   0x8 (size before relaxing)
  .ARM.exidx.text._Z11userControlv
