@@ -44,7 +44,7 @@ motor intakeLeft = motor(PORT16, ratio18_1, false);//Left intake
 motor oneBar = motor(PORT1, ratio36_1, false);
 inertial turnInertial = inertial(PORT11);
 controller Controller1        = controller(primary);//Sets up controllers
-controller Controller2        = controller(partner);
+controller Controller2        = controller(primary);
 
 int cubeRampValue;//Sets up varables to be used later
 int intakeValue;
@@ -448,25 +448,23 @@ int userControl(){
       leftFWD.spin(forward, (Controller1.Axis3.position()/ turnValue)/baseRPM , vex::velocityUnits::pct);
       rightBack.spin(forward, (Controller1.Axis2.position()/ turnValue)/baseRPM , vex::velocityUnits::pct);
       leftBack.spin(forward, (Controller1.Axis3.position()/ turnValue)/baseRPM , vex::velocityUnits::pct);
-      if (Controller2.ButtonL1.pressing() and !(cubeRamp.rotation(rev)>3)){//if button is pressing it will
+      if (Controller2.ButtonL1.pressing() and !(cubeRamp.rotation(rev)>3) and !Controller1.ButtonL2.pressing()){//if button is pressing it will
         cubeRampValue = (-23*(cubeRamp.rotation(rev)))+100;//sets cube ramp to 85 RPM
-     } else if (Controller2.ButtonL2.pressing() and (!(cubeRamp.rotation(rev)<0) or Controller2.ButtonY.pressing())) {//if button is pressing it will
+     } else if (Controller2.ButtonL2.pressing() and (!(cubeRamp.rotation(rev)<0) or Controller2.ButtonY.pressing()) and !Controller1.ButtonL1.pressing()) {//if button is pressing it will
        cubeRampValue = -100;//sets cube ramp to -100 RPM
       } else {//if no others are true
         cubeRampValue = 0;//Stops cube ramp
       }
       cubeRamp.spin(forward, cubeRampValue , vex::velocityUnits::rpm);//applies the changes
-      if (Controller1.ButtonR1.pressing() or Controller2.ButtonRight.pressing()){//if button is pressing it will
+      if (Controller1.ButtonR1.pressing()){//if button is pressing it will
         intakeValue = 100;//sets cube ramp to 100 RPM
-      } else if (Controller1.ButtonR2.pressing() or Controller2.ButtonLeft.pressing()) {//if button is pressing it will
+      } else if (Controller1.ButtonR2.pressing()) {//if button is pressing it will
         intakeValue = -150;//sets cube ramp to -200 RPM
       } else if (Controller1.ButtonA.pressing()){//if button is pressing it will
         intakeValue = -50;//sets cube ramp to -50 RPM
       }else if(Controller1.ButtonB.pressing()){//if button is pressing it will
         intakeValue = 45;//sets cube ramp to 45 RPM
-      } /*else if(Controller2.ButtonY.pressing()){//if button is pressing it will
-        task stacking(stack);//Stacks
-      }*/ else {//If no other conditions are true
+      } else {//If no other conditions are true
         intakeValue = 0;//sets cube ramp to -100 RPM
       }
       if(Controller2.ButtonUp.pressing() and (!(oneBar.rotation(rev)>2.3) or Controller2.ButtonY.pressing())){
@@ -477,11 +475,9 @@ int userControl(){
       } else {
       oneBarValue = 0;
      }
-     if (Controller2.ButtonR1.pressing() or Controller1.ButtonL1.pressing()){
+     if (Controller1.ButtonL1.pressing() and Controller1.ButtonL2.pressing()){
         baseRPM = 6;
-      } else if (Controller2.ButtonR2.pressing() or Controller1.ButtonL2.pressing()){
-        baseRPM = 2;
-      }else {
+      } else {
         baseRPM = 1;
      }
      if (((Controller1.Axis3.value() > 60) and (Controller1.Axis2.value() < -60)) or ((Controller1.Axis3.value() < -60) and (Controller1.Axis2.value() > 60))){
