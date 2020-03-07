@@ -13,8 +13,10 @@ void autonomous(void) {
   calibrateInertial();
   userControlEnabled=false;
   flipOut();
+  moveForward(4,100, true);
+  moveBackwards(5, 100, true);
   cubeRampVertical(false, 100);
-  runAuton();
+  skills();
 }
 
 void usercontrol(void) {//User Control

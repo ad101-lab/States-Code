@@ -271,7 +271,7 @@ int redAutonBottom(){
   intake(-50);
   wait(0.5, seconds);
   intake(0);
-  moveBackwards(1.9, 60, true);
+  moveBackwards(1.8, 60, true);
   turnRight(135, 60);
   moveForward(2.1, 60, true);
   stack();
@@ -284,7 +284,7 @@ int blueAutonBottom(){
   intake(-50);
   wait(0.5, seconds);
   intake(0);
-  moveBackwards(1.9, 60, true);
+  moveBackwards(1.8, 60, true);
   turnLeft(135, 60);
   moveForward(2.1, 60, true);
   stack();
@@ -293,11 +293,11 @@ int blueAutonBottom(){
 
 int redAutonTop(){
   intake(150);
-  moveForward(2.4, 50, true);
+  moveForward(2.2, 50, true);
   intake(0);
   turnLeft(90, 60);
   intake(150);
-  moveForward(2.5, 60, true);
+  moveForward(2.4, 60, true);
   intake(-50);
   task::sleep(500);
   intake(0);
@@ -310,11 +310,11 @@ int redAutonTop(){
 
 int blueAutonTop(){
   intake(150);
-  moveForward(2.4, 50, true);
+  moveForward(2.2, 50, true);
   intake(0);
   turnRight(90, 60);
   intake(150);
-  moveForward(2.5, 60, true);
+  moveForward(2.4, 60, true);
   intake(-50);
   task::sleep(500);
   intake(0);
