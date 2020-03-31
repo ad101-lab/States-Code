@@ -25,11 +25,15 @@ extern motor CubeRamp;
 extern motor intakeRight;
 extern motor intakeLeft;
 extern inertial turnInertial;
+extern vision cubeVision;
 extern controller Controller1;
 extern controller Controller2;
 using namespace vex;
 
 competition Competition;
+
+using signature = vision::signature;
+using code = vision::code;
 
 brain Brain;
 bumper rampBumper        = bumper(Brain.ThreeWirePort.H);//Sets up the Globals of The limit bumpers
@@ -43,6 +47,8 @@ motor intakeRight = motor(PORT15, ratio18_1, true);//Right intake global
 motor intakeLeft = motor(PORT16, ratio18_1, false);//Left intake
 motor oneBar = motor(PORT1, ratio36_1, false);
 inertial turnInertial = inertial(PORT11);
+signature BLUE_CUBE = signature (1, -3555, -2813, -3184, 7273, 11145, 9209, 2.5, 0);
+vision cubeVision = vision (PORT1, 50, BLUE_CUBE);
 controller Controller1        = controller(primary);//Sets up controllers
 controller Controller2        = controller(primary);
 
@@ -163,6 +169,69 @@ void cubeRampVertical (bool degree, double speed){
 
 }
 
+void centerToCube(std::string colorOfCube, int distanceToCube){
+  bool done;
+  bool turning;
+  if(cubeVision.installed()){
+    while(!done){
+      task::sleep(200);
+      cubeVision.takeSnapshot(BLUE_CUBE); 
+      if(cubeVision.objects[0].exists){
+        Brain.Screen.clearScreen();
+        Brain.Screen.setCursor(1, 1);
+        Brain.Screen.print("X: %d, Y: %d,Width: %d, Height: %d",cubeVision.largestObject.centerX,cubeVision.largestObject.centerY,cubeVision.largestObject.width, cubeVision.largestObject.height);
+        if(cubeVision.largestObject.centerX>=170){
+          Brain.Screen.newLine();
+          Brain.Screen.print("Go Right");
+          leftFWD.spin(forward,40,percent);
+          rightFWD.spin(reverse,40,percent);
+          leftBack.spin(forward,40,percent);
+          rightBack.spin(reverse,40,percent);
+          turning = true;
+        } else if(cubeVision.largestObject.centerX<=130){
+          Brain.Screen.newLine();
+          Brain.Screen.print("Go Left");
+          leftFWD.spin(reverse,40,percent);
+          rightFWD.spin(forward,40,percent);
+          leftBack.spin(reverse,40,percent);
+          rightBack.spin(forward,40,percent);
+          turning = true;
+        } else{
+          Brain.Screen.newLine();
+          Brain.Screen.print("In the middle");
+          turning = false;
+        }
+        if(cubeVision.largestObject.width>=distanceToCube+10 and !turning){
+          Brain.Screen.newLine();
+          Brain.Screen.print("Too CLose");
+          leftFWD.spin(reverse,40,percent);
+          rightFWD.spin(reverse,40,percent);
+          leftBack.spin(reverse,40,percent);
+          rightBack.spin(reverse,40,percent);
+        } else if(cubeVision.largestObject.centerX<=distanceToCube-10 and !turning){
+          Brain.Screen.newLine();
+          Brain.Screen.print("Too Far");
+          leftFWD.spin(forward,40,percent);
+          rightFWD.spin(forward,40,percent);
+          leftBack.spin(forward,40,percent);
+          rightBack.spin(forward,40,percent);
+        } else{
+          Brain.Screen.newLine();
+          Brain.Screen.print("Just Right");
+        }
+      }else{
+        Brain.Screen.clearScreen();
+        Brain.Screen.setCursor(1, 1);
+        Brain.Screen.print("No Object Detected");
+      }
+    }
+  }
+  else{
+    Brain.Screen.clearScreen();
+    Brain.Screen.print("No Vision sensor found");
+  }
+}
+
 void intake (double speed){
   intakeValue = speed*-1; //Conversion factor
   if(speed == 0){
@@ -263,11 +332,28 @@ void flipOut(){
   wait(1, seconds);
   intake(-200);
   wait(0.5, seconds);
+  while(std::abs(turnInertial.rotation())>2){
+    if(turnInertial.rotation()>2){
+      leftFWD.spin(forward, 50, percent);
+      rightFWD.spin(reverse, 50, percent);
+      leftBack.spin(forward, 50, percent);
+      rightBack.spin(reverse, 50, percent);
+    }else if(turnInertial.rotation()<-2){
+      leftFWD.spin(reverse, 50, percent);
+      rightFWD.spin(forward, 50, percent);
+      leftBack.spin(reverse, 50, percent);
+      rightBack.spin(forward, 50, percent);
+    }
+  }
+  leftFWD.spin(reverse);
+  rightFWD.spin(reverse);
+  leftBack.spin(reverse);
+  rightBack.spin(reverse);
+  task::sleep(250);
 }
 
 int redAutonBottom(){
-  intake(170);
-  moveForward(4.2, 30, true);
+  flipOut();
   intake(-50);
   wait(0.5, seconds);
   intake(0);
@@ -279,8 +365,7 @@ int redAutonBottom(){
 }
 
 int blueAutonBottom(){
-  intake(170);
-  moveForward(4.2, 30, true);
+  flipOut();
   intake(-50);
   wait(0.5, seconds);
   intake(0);
@@ -292,9 +377,7 @@ int blueAutonBottom(){
 }
 
 int redAutonTop(){
-  intake(150);
-  moveForward(2.4, 50, true);
-  intake(0);
+  flipOut();
   turnLeft(90, 60);
   intake(150);
   moveForward(2.5, 60, true);
@@ -309,9 +392,7 @@ int redAutonTop(){
 }
 
 int blueAutonTop(){
-  intake(150);
-  moveForward(2.4, 50, true);
-  intake(0);
+  flipOut();
   turnRight(90, 60);
   intake(150);
   moveForward(2.5, 60, true);
